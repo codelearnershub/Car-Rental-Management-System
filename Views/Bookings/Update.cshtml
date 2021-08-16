@@ -1,0 +1,57 @@
+﻿@model CarRentalsSystem.Models.ViewModel.UpdateBookingsViewModel
+@{ ViewBag.Title = "Update bookings";
+}
+<div class="row justify-content-center">
+    <div class="card">
+
+        <div class="card-header">
+            <h1 class="text-center">Update Booking</h1>
+        </div>
+
+        <div class="card-body">
+
+            <form method="post">
+
+                <div class="form-group">
+                    <input asp-for="Booking_ref" class="form-control" placeholder="Booking Ref No" />
+                    <span asp-validation-for="Booking_ref" class="text-danger"></span><br>
+                </div>
+                <div>
+                    <select asp-for="Customer_Id" asp-items="ViewBag.Customers" class="form-control" required>
+                        <option selected>--Select Customer--</option>
+                    </select>
+                    <span asp-validation-for="Customer_Id" class="text-danger"></span>
+                </div>
+
+                <div>
+                    <select asp-for="Car_Id" asp-items="ViewBag.Cars" class="form-control" required>
+                        <option selected>--Select Car--</option>
+                    </select>
+                    <span asp-validation-for="Car_Id" class="text-danger"></span>
+                </div>
+
+                <div>
+                    <select asp-for="Location_Id" asp-items="ViewBag.Locations" class="form-control" required>
+                        <option selected>--Select Location--</option>
+                    </select>
+                    <span asp-validation-for="Location_Id" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <input asp-for="Booking_Date" class="form-control" placeholder="Booking_Date" />
+                    <span asp-validation-for="Booking_Date" class="text-danger"></span><br>
+                </div>
+                <div class="form-group">
+                    <input asp-for="Return_Date" class="form-control" placeholder="Return Date" />
+                    <span asp-validation-for="Return_Date" class="text-danger"></span><br>
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" value="Create Product" class="btn btn-success" />
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>

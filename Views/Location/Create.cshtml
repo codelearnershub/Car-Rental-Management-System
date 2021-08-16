@@ -1,0 +1,22 @@
+﻿@model CarRentalsSystem.Models.ViewModel.CreateLocationViewModel
+@{
+    ViewData["Title"] = "Add Location";
+}
+<div class="card">
+    <div class="card-header">
+        <a class="btn btn-block" asp-controller="Location" asp-action="Create">Create</a>
+    </div>
+</div>
+
+<form method="post">
+
+    <div>
+        <input type="text" name="Name" placeholder=" Name" class="form-control" />
+    </div>
+    <div>
+    <input type="text" name="Address" placeholder=" Address" class="form-control" />
+    </div>
+    <div>
+        <input type="submit" value="Create" class="btn btn-primary" />
+    </div>
+</form>

@@ -1,0 +1,35 @@
+﻿@model CarRentalsSystem.Models.ViewModel.UpdateLocationViewModel
+@{ ViewBag.Title = "Update Location";
+}
+<div class="row justify-content-center">
+    <div class="card">
+
+        <div class="card-header">
+            <h1 class="text-center">Update Booking</h1>
+        </div>
+
+        <div class="card-body">
+
+            <form method="post">
+
+              
+                <div class="form-group">
+                    <input asp-for="Name" class="form-control" placeholder="Name" />
+                    <span asp-validation-for="Name" class="text-danger"></span><br>
+                </div>
+               
+
+                <div class="form-group">
+                    <input asp-for="Address" class="form-control" placeholder=" Address" />
+                    <span asp-validation-for="Address" class="text-danger"></span><br>
+                </div>
+                
+                <div class="form-group">
+                    <input type="submit" value="Update " class="btn btn-success" />
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>

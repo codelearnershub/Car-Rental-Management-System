@@ -1,0 +1,47 @@
+﻿@model CarRentalsSystem.Models.ViewModel.RegisterViewModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<h3>Register</h3>
+<form method="post">
+    <div>
+        <input type="text"asp-for="FirstName" name="FirstName" placeholder="First Name" class="form-control" />
+    </div>
+    <div>
+        <input type="text" asp-for="MiddleName"name="MiddleName" placeholder=" Middle Name" class="form-control" />
+    </div>
+    <div>
+        <input type="text" asp-for="LastName"name="LastName" placeholder="Last Name" class="form-control" />
+    </div>
+    <div>
+        <input type="text" asp-for="Gender"name="Gender" placeholder="Gender" class="form-control" />
+    </div>
+    <div>
+        <input type="password"  asp-for="Password" placeholder="Password" class="form-control" />
+    </div>
+    <div>
+        <input type="datetime" asp-for="DateOfBirth"name="DateOfBirth" placeholder="Date Of Birth" class="form-control" />
+    </div>
+    <div>
+        <input type="tel" asp-for="PhoneNo"name="PhoneNo" placeholder="Phone No" class="form-control" />
+    </div>
+    <div>
+        <input type="text" asp-for="Email"name="Email" placeholder="Email" class="form-control" />
+    </div>
+    <div>
+        <input type="text" asp-for="Address"name="Address" placeholder="Address" class="form-control" />
+    </div>
+
+    @*<div>
+        <label asp-for="usertype">register as:</label>
+        <br />
+        <input type="radio" asp-for="usertype" value="customer" /> customer <br />
+        <input type="radio" asp-for="usertype" value="admin" /> admin <br />
+    </div>*@
+    <div>
+        <input type="submit" value="Register" class="btn btn-primary" /><h5>if you have an account before, register here</h5>
+        <a class="btn btn-primary" asp-area="" asp-controller="Auth" asp-action="Login">Login</a>
+
+    </div>
+</form>

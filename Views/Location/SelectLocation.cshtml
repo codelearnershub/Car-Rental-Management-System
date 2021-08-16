@@ -1,0 +1,24 @@
+﻿@model IEnumerable<CarRentalsSystem.Models.ViewModel.LocationViewModel>
+<div class="card-header">
+    <div class="text-center">
+        <h1 class="display-3" style="font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif">Location</h1>
+    </div>
+</div>
+<h3>Our Products</h3>
+<div class="row" style="background-color:lightblue">
+    @foreach (var location in Model)
+    {
+    <div class="col-lg-4 mb-5 col-sm-6">
+        <div class="card-header-tabs">
+            <a class="font-weight-bold">Base:</a>@location.Name<br>
+        </div>
+        <div class="card-body">
+            <a class="font-weight-bold">Address</a>@location.Address<br>
+        </div>
+    </div>
+        <div>
+            <a class="btn btn-outline-success" asp-controller="Car" asp-action="SelectCar">Select Car</a>
+        </div>
+
+    }
+</div>

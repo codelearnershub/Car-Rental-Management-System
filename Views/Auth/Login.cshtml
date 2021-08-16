@@ -1,0 +1,20 @@
+﻿@model CarRentalsSystem.Models.ViewModel.LoginViewModel
+    <div>
+        <div>
+            <form asp-action="Login">
+                <div>
+                    <label asp-for="Email"></label>
+                    <input asp-for="Email" placeholder="User Email"/>
+                </div>
+
+                <div>
+                    <label asp-for="Password">Password</label>
+                    <input type="password" asp-for="Password" placeholder="Password"/>
+                </div>
+                <div>
+                    <button type="submit" class="btn btn-dark">Login</button><h6>if you do not have an account </h6>
+                    <a class="btn btn-primary" asp-area="" asp-controller="Auth" asp-action="Register">Sign-Up here</a>
+                </div>
+            </form>
+        </div>
+    </div>

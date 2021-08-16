@@ -1,0 +1,46 @@
+﻿  @model IEnumerable<CarRentalsSystem.Models.ViewModel.BookingViewModel>
+
+@{
+    ViewData["Title"] = "Create Booking";
+    int id = 1;
+}
+
+<div class="card">
+    <h2>Boookings</h2>
+</div>
+
+<table class="table table-bordered">
+    <thead>
+        <tr style="color:aquamarine">
+            <th>Id</th>
+            <th>Booking Ref No</th>
+            <th>Customer Name</th>
+            <th>Car Name</th>
+            <th>Location</th>
+            <th>Booking Date</th>
+            <th> Return Date</th>
+            <th>CreatedAt</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var booking in Model)
+        {
+            <tr>
+                <td>@(id++)</td>
+                <td>@booking.Booking_ref</td>
+                <td>@booking.Customer_Id </td>
+                <td>@booking.Car_Id</td>
+                <td>@booking.Location_Id</td>
+                <td>@booking.Booking_Date</td>
+                <td>@booking.Return_Date</td>
+                <td>@booking.CreatedAt</td>
+                <td>
+
+                    <a class="btn btn-success" asp-action="Delete" asp-route-id="@booking.Id">Delete</a>
+                    <a class="btn btn-success" asp-action="Update" asp-route-id="@booking.Id">Update</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

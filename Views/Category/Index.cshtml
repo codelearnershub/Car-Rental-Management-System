@@ -1,0 +1,43 @@
+﻿@model IEnumerable<CarRentalsSystem.Models.ViewModel.CategoryViewModel>
+@{
+    ViewData["Title"] = "Create Category";
+    int id = 1;
+}
+
+<div class="card">
+    <h2>Categories</h2>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a class="btn btn-block" asp-controller="Category" asp-action="Create">Create</a>
+    </div>
+</div>
+
+
+<table class="table table-bordered">
+    <thead>
+        <tr style="color:aquamarine">
+            <th>Id</th>          
+            <th> Name</th>
+            <th>CreatedAt</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var category in Model)
+        {
+            <tr>
+                <td>@(id++)</td>
+                
+                <td>@category.Name </td>
+                
+                <td>@category.CreatedAt</td>
+                <td>
+                    <a class="btn btn-success" asp-action="Details" asp-route-id="@category.Id">Details</a>
+                    <a class="btn btn-success" asp-action="Delete" asp-route-id="@category.Id">Delete</a>
+                    <a class="btn btn-success" asp-action="Update" asp-route-id="@category.Id">Update</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

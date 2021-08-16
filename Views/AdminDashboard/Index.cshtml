@@ -1,0 +1,140 @@
+﻿@{
+    Layout = "_AdminDashboard";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - CarRentalsSystem</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head >
+<body>
+    <div class="dropdown">
+        <button class="dropbtn"><i class="bi bi-three-dots"></i></button>
+        <div class="dropdown-content">
+            -<ul class="navbar-nav nav nav-pills nav-stacked">
+                <li class="nav-item active">
+                    <a asp-area="" asp-controller="Admin" asp-action="Index">Admin Management</a>
+                </li>
+                <li class="nav-item">
+                    <a asp-area="" asp-controller="Customer" asp-action="Index">Customer Management</a>
+                </li>
+                <li class="nav-item">
+                    <a asp-area="" asp-controller="Car" asp-action="Create">Car Management</a>
+                </li>
+                <li class="nav-item">
+                    <a asp-area="" asp-controller="Location" asp-action="Index">Location Management</a>
+                </li>
+                <li class="nav-item">
+                    <a asp-area="" asp-controller="Booking" asp-action="Index">Bookings Management</a>
+                </li>
+                <li class="nav-item">
+                    <a asp-area="" asp-controller="Category" asp-action="Index">Category Management</a>
+                </li>
+            </ul><br>
+        </div>
+    </div>
+
+
+    <header style="background-color:cadetblue">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">CarRentalsSystem</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="btn btn btn-danger" asp-area="" asp-controller="Car" asp-action="Index">Car Management</a>
+                        </li>
+                        &nbsp;
+                        <li class="nav-item">
+                            <a class="btn btn btn-danger" asp-area="" asp-controller="Customer" asp-action="Index">Customer Management</a>
+                        </li>
+                        &nbsp;
+                        <li class="nav-item">
+                            <a class="btn btn-danger" asp-area="" asp-controller="Location" asp-action="Index">Location Management</a>
+                        </li>
+                        &nbsp;
+                        <li class="nav-item">
+                            <a class="btn btn-danger" asp-area="" asp-controller="Category" asp-action="Index"> Category Management</a>
+                        </li>
+                        &nbsp;
+                        <li class="nav-item">
+                            <a class="btn btn-danger" asp-area="" asp-controller="Bookings" asp-action="Index">Booking Management</a>
+                        </li>
+                    </ul>
+                    <div>
+                        <ul>
+                            <li class="nav-item">
+                                <a class="btn btn-danger" asp-area="" asp-controller="Auth" asp-action="Logout">Logout</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </nav>
+    </header>
+    <h1>AdminDashboard</h1>
+
+    <div>
+
+       
+    </div>
+    <style>
+        .dropbtn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 16px;
+            font-size: 16px;
+            border: none;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f1f1f1;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+            .dropdown-content a {
+                color: black;
+                padding: 12px 16px;
+                text-decoration: none;
+                display: block;
+            }
+
+                .dropdown-content a:hover {
+                    background-color: #ddd;
+                }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown:hover .dropbtn {
+            background-color: #3e8e41;
+        }
+    </style>
+
+
+
+
+</body>
+</html>
+
+
+
+
