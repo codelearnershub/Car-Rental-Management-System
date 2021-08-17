@@ -60,7 +60,8 @@ namespace CarRentalsSystem.Service
 
             var bookings = new Bookings
             {
-                Id = model.Car_Id,
+                UserId = model.UserId,
+                Id = model.CarId,
                 Booking_ref = b_ref,
                
                
