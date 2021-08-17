@@ -79,7 +79,8 @@ namespace CarRentalsSystem.Models.ViewModel
 		[Display(Name = "FirstName")]
 		public string Password { get; set; }
 		public DateTime CreatedAt { get; set; }
-	}
+        public int UserId { get; internal set; }
+    }
 	public class UpdateBookingsViewModel
     { public int Id { get; set; }
 		[Required(ErrorMessage = "This field has to be filled")]

@@ -30,6 +30,9 @@ namespace CarRentalsSystem.Models
         public string Address { get; set; }
         [Required]
         public string Gender { get; set; }
-        public string AccountNumber { get; set; }
+      /*  [Required]
+        public string CardNo { get; set; }
+        [Required]
+        public int  CardPin{ get; set; }*/
     }
 }

@@ -41,6 +41,6 @@ namespace CarRentalsSystem.Models
         public string CarPictureUrl { get; set; }
 
         public virtual Category Category { get; set; }
-
+        public List<Car_CarCategory> CarCarCategories{ get;  set; }
     }
 }

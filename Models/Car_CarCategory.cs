@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace CarRentalsSystem.Models
 {
-    public class Car_CarCategoy:BaseEntity
+    public class Car_CarCategory:BaseEntity
     {
         public Car Car { get; set; }
         public int CarId { get; set; }

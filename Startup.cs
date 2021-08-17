@@ -41,7 +41,9 @@ namespace CarRentalsSystem
                 services.AddScoped<ILocationRepository, LocationRepository>();
                 services.AddScoped<ILocationService, LocationService>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IRoleService, RoleService>();
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(config =>
             {
                 config.LoginPath = "/Auth/Login";

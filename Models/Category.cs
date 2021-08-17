@@ -10,6 +10,6 @@ namespace CarRentalsSystem.Models
     {
         [Required]
         public string Name { get; set; }
-      
+        public  List<Car_CarCategory> CarCarCategories { get; internal set; }
     }
 }

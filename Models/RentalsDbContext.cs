@@ -37,6 +37,11 @@ namespace CarRentalsSystem.Models
 
             modelBuilder.Entity<Role>().HasMany(r => r.UserRoles).WithOne(ur => ur.Role).HasForeignKey(ur => ur.RoleId);
 
+            modelBuilder.Entity<Car_CarCategory>().HasKey(ur => ur.Id);
+            modelBuilder.Entity<Car>().HasMany(u => u.CarCarCategories).WithOne(ur => ur.Car).HasForeignKey(ur => ur.CarId);
+
+            modelBuilder.Entity<Category>().HasMany(r => r.CarCarCategories).WithOne(ur => ur.Category).HasForeignKey(ur => ur.CategoryId);
+
             base.OnModelCreating(modelBuilder);
         }
     }

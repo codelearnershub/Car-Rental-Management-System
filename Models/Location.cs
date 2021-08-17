@@ -13,8 +13,6 @@ namespace CarRentalsSystem.Models
         [Required]
         public string Address { get; set; }
        public List<Car> Cars { get; set; }
-        
-       
-        
+        public int CarId { get; set; }     
     }
 }
