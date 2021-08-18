@@ -61,7 +61,7 @@ namespace CarRentalsSystem.Controllers
                 {
                     new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                     new Claim(ClaimTypes.Email, user.Email),
-                    new Claim(ClaimTypes.Role, user.UserRoles.ToString()),
+                   // new Claim(ClaimTypes.Role, user.UserRoles.ToString()),
                 };
 
             var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -80,8 +80,8 @@ namespace CarRentalsSystem.Controllers
              }
              Role role = new Role();
  */
-            var userRole = user.UserRoles.ToString();
-            if (userRole == "hhhh")
+            //var userRole = user.UserRoles.ToString();
+            if (user.RoleId == 1)
                 {
                     return RedirectToAction("Index", "AdminDashboard");
                 } 

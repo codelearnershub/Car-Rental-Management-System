@@ -32,5 +32,8 @@ namespace CarRentalsSystem.Models.ViewModel
         [Display(Name = "Address")]
         public string Address { get;set; }
         public List<Role> Roles { get; set; }
+        public int Id { get; internal set; }
+        public string ConfirmPassword { get; internal set; }
+        public string PasswordHash { get; internal set; }
     }
 }

@@ -11,6 +11,6 @@ namespace CarRentalsSystem.Service
     {
         public User LoginUser(string email, string password);
        // public void RegisterUser(RegisterViewModel model);
-        public void RegisterCustomer(RegisterViewModel model);
+        public void RegisterUser(RegisterViewModel model);
     }
 }
