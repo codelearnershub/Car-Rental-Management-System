@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 
 namespace CarRentalsSystem.Models
 {
-    public class UniversalEntity:BaseEntity
+    public class UniversalEntity
     {
+        /*public User User { get; set; }
+        [Required]
+        public int UserId { get; set; }
         public string Email { get; set; }
-        
       
         [Required]
         public string FirstName { get; set; }
@@ -28,6 +30,6 @@ namespace CarRentalsSystem.Models
          [Required]
           public string CardNo { get; set; }
           [Required]
-          public int  CardPin{ get; set; }
+          public int  CardPin{ get; set; }*/
     }
 }

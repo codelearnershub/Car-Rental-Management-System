@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CarRentalsSystem.Migrations
 {
     [DbContext(typeof(RentalsDbContext))]
-    [Migration("20210816164009_Latest")]
-    partial class Latest
+    [Migration("20210818182042_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -247,8 +247,18 @@ namespace CarRentalsSystem.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<string>("AccountNumber")
+                        .HasColumnType("text");
+
                     b.Property<string>("Address")
                         .HasColumnType("text");
+
+                    b.Property<string>("CardNo")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("CardPin")
+                        .HasColumnType("int");
 
                     b.Property<string>("ConfirmPassword")
                         .HasColumnType("text");

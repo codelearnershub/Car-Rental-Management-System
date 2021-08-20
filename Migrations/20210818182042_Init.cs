@@ -70,6 +70,7 @@ namespace CarRentalsSystem.Migrations
                     PhoneNo = table.Column<string>(nullable: false),
                     Address = table.Column<string>(nullable: true),
                     Gender = table.Column<string>(nullable: false),
+                    AccountNumber = table.Column<string>(nullable: true),
                     CardNo = table.Column<string>(nullable: false),
                     CardPin = table.Column<int>(nullable: false)
                 },

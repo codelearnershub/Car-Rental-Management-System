@@ -1,26 +1,22 @@
-﻿using CarRentalsSystem.Interfaces;
-using CarRentalsSystem.Models;
+﻿using CarRentalsSystem.Models;
 using CarRentalsSystem.Models.ViewModel;
 using CarRentalsSystem.Repositories;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Cryptography;
-using System.Threading.Tasks;
 
 namespace CarRentalsSystem.Service
 {
     public class UserService : IUserService
     {
         public readonly IUserRepository _userRepository;
-        public readonly ICustomerRepository customerRepository;
+      
         public readonly IRoleRepository roleRepository;
-        public UserService(IUserRepository userRepository, IRoleRepository roleRepository, ICustomerRepository customerRepository)
+
+        public UserService(IUserRepository userRepository, IRoleRepository roleRepository)
         {
             _userRepository = userRepository;
             this.roleRepository = roleRepository;
-            this.customerRepository = customerRepository;
         }
 
         public User LoginUser(string email, string password)
@@ -43,46 +39,7 @@ namespace CarRentalsSystem.Service
 
             return null;
         }
-        /*   public void RegisterCustomer(RegisterViewModel model)
-           {
-               byte[] salt = new byte[128 / 8];
-
-               using (var rng = RandomNumberGenerator.Create())
-               {
-                   rng.GetBytes(salt);
-               }
-
-               string saltString = Convert.ToBase64String(salt);
-
-               string hashedPassword = HashPassword(model.Password, saltString);
-
-               var role = roleRepository.FindRoleByName("Customer");
-               User user = new User
-               {
-                   FirstName = model.FirstName,
-                   MiddleName = model.MiddleName,
-                   LastName = model.LastName,
-                   Gender = model.Gender,
-                   DateOfBirth = model.DateOfBirth,
-                   PhoneNo = model.PhoneNo,
-                   Address = model.Address,
-                   Email = model.Email,
-               };
-               var userRole = new UserRole
-               {
-                   User = user,
-                   UserId = user.Id,
-                   Role = role,
-                   RoleId = role.Id,
-               };
-               user.UserRoles.Add(userRole);
-   */
-        
-
-
-        //}
-
-        public void RegisterUser(RegisterViewModel model)
+        public void RegisterCustomer(RegisterViewModel model)
         {
             byte[] salt = new byte[128 / 8];
 
@@ -95,30 +52,98 @@ namespace CarRentalsSystem.Service
 
             string hashedPassword = HashPassword(model.Password, saltString);
 
-
+            var role = roleRepository.FindRoleByName("Customer");
             User user = new User
             {
-                Id = model.Id,
-                ConfirmPassword = model.ConfirmPassword,
-                Email= model.Email,
-                HashSalt = saltString,
-                PasswordHash = hashedPassword,
-                Role = roleRepository.FindRoleByName("Admin")
-            };
-            _userRepository.AddUser(user);
-            Customer customer = new Customer
-            {
-                UserId = model.Id,
                 FirstName = model.FirstName,
                 MiddleName = model.MiddleName,
                 LastName = model.LastName,
                 Gender = model.Gender,
-                Email = model.Email,
-                PhoneNo = model.PhoneNo,
                 DateOfBirth = model.DateOfBirth,
+                PhoneNo = model.PhoneNo,
                 Address = model.Address,
+                Email = model.Email,
             };
-            customerRepository.AddCustomer(customer);
+            var userRole = new UserRole
+            {
+                User = user,
+                UserId = user.Id,
+                Role = role,
+                RoleId = role.Id,
+            };
+            user.UserRoles.Add(userRole);
+
+            
+        }
+
+            public void RegisterUser(RegisterViewModel model)
+        {
+            byte[] salt = new byte[128 / 8];
+
+            using (var rng = RandomNumberGenerator.Create())
+            {
+                rng.GetBytes(salt);
+            }
+
+            string saltString = Convert.ToBase64String(salt);
+
+            string hashedPassword = HashPassword(model.ConfirmPassword, saltString);
+
+            var role = roleRepository.FindRoleByName("Customer");
+
+            User user = new User
+            {
+                FirstName = model.FirstName,
+                MiddleName = model.MiddleName,
+                LastName = model.LastName,
+                Gender = model.Gender,
+                DateOfBirth = model.DateOfBirth,
+                PhoneNo = model.PhoneNo,
+                Address = model.Address,
+                Email = model.Email,
+                PasswordHash = hashedPassword,
+                HashSalt = saltString,
+            };
+            //Role role = new Role();
+          /*  var role = roleRepository.FindRoleByName("");*/
+            var userRole = new UserRole
+            {
+                User = user,
+                UserId = 2,
+                Role = role,
+                RoleId = role.Id,
+            };
+            user.UserRoles.Add(userRole);
+            _userRepository.AddUser(user);
+            //user.UserRoles.Add(userRole);
+            /* Customer customer = new Customer
+             {
+                 UserId = model.Id,
+                 FirstName = model.FirstName,
+                 MiddleName = model.MiddleName,
+                 LastName = model.LastName,
+                 Gender = model.Gender,
+                 Email = model.Email,
+
+                 PhoneNo = model.PhoneNo,
+                 DateOfBirth = model.DateOfBirth,
+                 Address = model.Address,
+             };
+             customerRepository.AddCustomer(customer);*/
+            /*  Admin admin = new Admin
+              {
+                  UserId = model.Id,
+                  FirstName = model.FirstName,
+                  MiddleName = model.MiddleName,
+                  LastName = model.LastName,
+                  Gender = model.Gender,
+                  Email = model.Email,
+                  PhoneNo = model.Password,
+                  DateOfBirth = model.DateOfBirth,
+                  Address = "abeokuta"
+              };*/
+
+            //////adminservice.addadmin(admin);
             /*foreach(var role in model.Roles)
             {
                 var userRole = new UserRole
@@ -135,22 +160,9 @@ namespace CarRentalsSystem.Service
 
 
 
-        //customerservice.addcustomer(customer);
 
-        ////////    admin admin = new admin
-        ////////    {
-        ////////        userid = user.id,
-        ////////        firstname = firstname,
-        ////////        middlename = middlename,
-        ////////        lastname = lastname,
-        ////////        gender = gender,
-        ////////        email = email,
-        ////////        phoneno = phoneno,
-        ////////        dateofbirth = dateofbirth,
-        ////////        address = "abeokuta"
-        ////////    };
 
-        ////////adminservice.addadmin(admin);
+
 
 
 

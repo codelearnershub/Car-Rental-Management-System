@@ -32,8 +32,13 @@ namespace CarRentalsSystem.Models.ViewModel
         [Display(Name = "Address")]
         public string Address { get;set; }
         public List<Role> Roles { get; set; }
-        public int Id { get; internal set; }
-        public string ConfirmPassword { get; internal set; }
-        public string PasswordHash { get; internal set; }
+        public Role Role { get; set; }
+        public int RoleId { get; set; }
+        public int Id { get;  set; }
+        [Required(ErrorMessage = "Fill out this field")]
+        [Display(Name = "Confirm Password")]
+        public string ConfirmPassword { get;  set; }
+
+        public string PasswordHash { get;  set; }
     }
 }

@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CarRentalsSystem.Migrations
 {
     [DbContext(typeof(RentalsDbContext))]
-    [Migration("20210816154227_Init")]
-    partial class Init
+    [Migration("20210819162335_userroles")]
+    partial class userroles
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -239,6 +239,20 @@ namespace CarRentalsSystem.Migrations
                         .IsUnique();
 
                     b.ToTable("Roles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Admin"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Customer"
+                        });
                 });
 
             modelBuilder.Entity("CarRentalsSystem.Models.User", b =>
@@ -249,13 +263,6 @@ namespace CarRentalsSystem.Migrations
 
                     b.Property<string>("Address")
                         .HasColumnType("text");
-
-                    b.Property<string>("CardNo")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("CardPin")
-                        .HasColumnType("int");
 
                     b.Property<string>("ConfirmPassword")
                         .HasColumnType("text");

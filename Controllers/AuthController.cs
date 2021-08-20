@@ -61,7 +61,7 @@ namespace CarRentalsSystem.Controllers
                 {
                     new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                     new Claim(ClaimTypes.Email, user.Email),
-                   // new Claim(ClaimTypes.Role, user.UserRoles.ToString()),
+                   new Claim(ClaimTypes.Role, user.UserRoles.ToString()),
                 };
 
             var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -81,15 +81,15 @@ namespace CarRentalsSystem.Controllers
              Role role = new Role();
  */
             //var userRole = user.UserRoles.ToString();
-            if (user.RoleId == 1)
+           /* if (user.UserRoles.Contains("Admin") == 1)
                 {
                     return RedirectToAction("Index", "AdminDashboard");
                 } 
                 else
                 {
                     return RedirectToAction("Index", "CustomerDashboard");
-                }
-               // return RedirectToAction("Index");
+                }*/
+                return RedirectToAction("Index");
         }
 
         public async Task<IActionResult> Logout()

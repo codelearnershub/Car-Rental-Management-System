@@ -11,12 +11,16 @@ namespace CarRentalsSystem.Models.ViewModel
 	
 		public int Car_Id { get; set; }
 		public string CarName { get; set; }
+		public Customer Customer { get; set; }
+		public int CustomerId { get; set; }
 		public int Location_Id { get; set; }
 		public string Location { get; set; }
 		public DateTime Booking_Date { get; set; }
 		public DateTime Return_Date { get; set; }
-		public DateTime CreatedAt { get; set; }
-	}
+		public DateTime CreatedAt { get;set; }
+        public string Booking_ref { get;set; }
+        public int Id { get;  set; }
+    }
 	public class CreateBookingsViewModel
     {
 		public Car Car { get; set; }
