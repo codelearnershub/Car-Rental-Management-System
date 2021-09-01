@@ -72,8 +72,7 @@ namespace CarRentalsSystem.Service
                 RoleId = role.Id,
             };
             user.UserRoles.Add(userRole);
-
-            
+                        
         }
 
             public void RegisterUser(RegisterViewModel model)

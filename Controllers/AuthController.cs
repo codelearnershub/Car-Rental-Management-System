@@ -35,9 +35,8 @@ namespace CarRentalsSystem.Controllers
         [HttpPost]
         public IActionResult Register(RegisterViewModel model)
         {
-            _userService.RegisterUser(model);
-           
-            return View();
+            _userService.RegisterUser(model);           
+            return RedirectToAction("Login");
         }
 
         [HttpGet]
@@ -55,6 +54,10 @@ namespace CarRentalsSystem.Controllers
             User user = _userService.LoginUser(vm.Email, vm.Password);
 
             if (user == null) return View();
+          //  if (user ==Admin)
+          // {
+
+           // }
 
 
             var claims = new List<Claim>
@@ -72,24 +75,25 @@ namespace CarRentalsSystem.Controllers
 
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, props);
 
-            /* List<UserRole> userRoles = new List<UserRole>();
-             foreach (var use in user.UserRoles)
+            UserRole userRoles = new UserRole();
+          /*   foreach (var use in user.UserRoles)
              {
                  Console.WriteLine(use);
 
              }
              Role role = new Role();
- */
-            //var userRole = user.UserRoles.ToString();
-           /* if (user.UserRoles.Contains("Admin") == 1)
-                {
-                    return RedirectToAction("Index", "AdminDashboard");
-                } 
+ *//*
+            //var userRole = user.UserRoles.ToString();*/
+          
+           if(userRoles.RoleId == 1)
+           { 
+                return RedirectToAction("Index", "AdminDashboard");
+           }
                 else
                 {
                     return RedirectToAction("Index", "CustomerDashboard");
-                }*/
-                return RedirectToAction("Index");
+                }
+              
         }
 
         public async Task<IActionResult> Logout()

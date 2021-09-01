@@ -1,4 +1,4 @@
-﻿using System;
+﻿                                                                                                                                                    using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -9,29 +9,34 @@ namespace CarRentalsSystem.Models
 {
     public class Car : BaseEntity
     {
-        [Required(ErrorMessage = "A Car Make is required")]
+        [Required]
         public string Make { get; set; }
-        [Required(ErrorMessage = "A Car Name is required")]
+
+        [Required]
         public string Name { get; set; }
-        [Required(ErrorMessage = "An Car Model is required")]
-        public string Model { get; set; }
-        [Required(ErrorMessage = "An Car Plate No is required")]
+
+        [Required]
+        public string Year { get; set; }
+
+        [Required]
         public string PlateNo { get; set; }
-        [Required(ErrorMessage = "An Car Features is required")]
+
+        [Required]
         public string Features { get; set; }
-        [Required(ErrorMessage = "An Car Break down Price is required")]
+        [Required]
         public string BreakdownPrice { get; set; }
-        [DisplayName("Location")]
+      
         public int LocationId { get; set; }
         [Required]
         public Location Location { get; set; }
-        [Required]
-        public string CarSn { get; set; }
+       /* [Required]
+        public string CarSn { get; set; }*/
         [Required]
       
         [DisplayName("Category")]
         public int CategoryId { get; set; }
-        [Required(ErrorMessage = "Price is required")]
+
+        [Required]
         public decimal Price { get; set; }
 
         public byte[] InternalImage { get; set; }

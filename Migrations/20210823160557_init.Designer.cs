@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CarRentalsSystem.Migrations
 {
     [DbContext(typeof(RentalsDbContext))]
-    [Migration("20210818182042_Init")]
-    partial class Init
+    [Migration("20210823160557_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -95,10 +95,6 @@ namespace CarRentalsSystem.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Model")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
@@ -109,6 +105,10 @@ namespace CarRentalsSystem.Migrations
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18, 2)");
+
+                    b.Property<string>("Year")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -239,6 +239,26 @@ namespace CarRentalsSystem.Migrations
                         .IsUnique();
 
                     b.ToTable("Roles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTime(2021, 8, 23, 5, 5, 56, 741, DateTimeKind.Local).AddTicks(6137),
+                            Name = "SuperAdmin"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedAt = new DateTime(2021, 8, 23, 5, 5, 56, 741, DateTimeKind.Local).AddTicks(7152),
+                            Name = "Admin"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreatedAt = new DateTime(2021, 8, 23, 5, 5, 56, 741, DateTimeKind.Local).AddTicks(7164),
+                            Name = "Customer"
+                        });
                 });
 
             modelBuilder.Entity("CarRentalsSystem.Models.User", b =>
@@ -247,18 +267,8 @@ namespace CarRentalsSystem.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("AccountNumber")
-                        .HasColumnType("text");
-
                     b.Property<string>("Address")
                         .HasColumnType("text");
-
-                    b.Property<string>("CardNo")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("CardPin")
-                        .HasColumnType("int");
 
                     b.Property<string>("ConfirmPassword")
                         .HasColumnType("text");
@@ -307,6 +317,23 @@ namespace CarRentalsSystem.Migrations
                         .IsUnique();
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Address = "Asero,Abk",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateOfBirth = new DateTime(2021, 8, 23, 5, 5, 56, 737, DateTimeKind.Local).AddTicks(4552),
+                            Email = "okikiolalawal@gmail.com",
+                            FirstName = "Jafar",
+                            Gender = "Male",
+                            HashSalt = "d+RzYMAQvvCJ+aNedX1uDg==",
+                            LastName = "Lawal",
+                            MiddleName = "Okikiola",
+                            PasswordHash = "SehzKv9PAiawVd3TeV1QkkgBlCz67YoY7WMm4FB836c=",
+                            PhoneNo = "09071681776"
+                        });
                 });
 
             modelBuilder.Entity("CarRentalsSystem.Models.UserRole", b =>
@@ -331,6 +358,15 @@ namespace CarRentalsSystem.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("UserRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTime(2021, 8, 23, 5, 5, 56, 742, DateTimeKind.Local).AddTicks(72),
+                            RoleId = 1,
+                            UserId = 1
+                        });
                 });
 
             modelBuilder.Entity("CarRentalsSystem.Models.Bookings", b =>

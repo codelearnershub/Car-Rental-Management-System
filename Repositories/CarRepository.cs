@@ -1,4 +1,5 @@
 ﻿using CarRentalsSystem.Models;
+using CarRentalsSystem.Models.ViewModel;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -14,22 +15,30 @@ namespace CarRentalsSystem.Repositories
         {
             _dbContext = dbContext;
         }
+      
+        public Car Create(Car car)
+        {
+            _dbContext.Cars.Add(car);
+            _dbContext.SaveChanges();
+            return car;
+        }
         public Car AddCar(Car car)
         {
             _dbContext.Cars.Add(car);
             _dbContext.SaveChanges();
             return car;
         }
-       
-        public Car UpdateCar(Car car)
+
+        public Car Update(Car car)
         {
             _dbContext.Cars.Update(car);
             _dbContext.SaveChanges();
             return car;
         }
+
         public void Delete(int id)
         {
-            //var customer = FindById(id);
+            //var customer = (id);
             var car = new Car
             {
                 Id = id
@@ -40,20 +49,17 @@ namespace CarRentalsSystem.Repositories
                 _dbContext.SaveChanges();
             }
         }
-        public List<Car> GetAll(IEnumerable<int> carId)
+        /*public IEnumerable<Car> GetAll()
         {
-            return _dbContext.Cars.Where(item => carId.Contains(item.LocationId)).ToList();
-
-        }
-
-        /*public List<Car> GetAllCars()
-        {
-            foreach(var car in List<Car>)
-            {
-
-            }
             return _dbContext.Cars.ToList();
+
         }*/
+
+        public List<Car> GetAll()
+        {
+          
+            return _dbContext.Cars.ToList();
+        }
         public IList<Car> Search(string searchText)
         {
             return _dbContext.Cars.Where(item => EF.Functions.Like(item.Name, $"%{searchText}%")).ToList();

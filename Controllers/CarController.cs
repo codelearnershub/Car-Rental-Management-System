@@ -32,40 +32,53 @@ namespace CarRentalsSystem.Controllers
             _categoryService = categoryService;
              _locationService = locationService;
     }
-       /* public IActionResult Index()
+        public IActionResult Index()
         {
-            var car = _carService.GetAllCar();
+            var car = _carService.GetAll();
             return View(car);
-        }*/
+        }
         [HttpGet]
         public IActionResult Create()
         {
-
-            List<CategoryViewModel> categories = _categoryService.GetAllCategory();
-            List<SelectListItem> listAItems = new List<SelectListItem>();
-            foreach (CategoryViewModel category in categories)
+            CreateCarViewModel carVM = new CreateCarViewModel
             {
-                SelectListItem item = new SelectListItem(category.Name, category.Id.ToString());
-                listAItems.Add(item);
-            }
+                CategoryList = _categoryService.GetAllCategory().Select(c => new SelectListItem
+                {
+                    Text = c.Name,
+                    Value = c.Id.ToString(),
+                }),
+                LocationList = _locationService.GetAllLocation().Select(c => new SelectListItem
+                {
+                    Text = c.Name,
+                    Value = c.Id.ToString(),
+                })
+            };
 
-            ViewBag.Categories = listAItems;
+            //List<CategoryViewModel> categories = _categoryService.GetAllCategory();
+            //List<SelectListItem> listAItems = new List<SelectListItem>();
+            //foreach (CategoryViewModel category in categories)
+            //{
+            //    SelectListItem item = new SelectListItem(category.Name, category.Id.ToString());
+            //    listAItems.Add(item);
+            //}
+
+            //ViewBag.Categories = listAItems;
                                  
-            List<LocationViewModel> locations = _locationService.GetAllLocation();
-            List<SelectListItem> listALocations = new List<SelectListItem>();
-            foreach (LocationViewModel location in locations)
-            {
-                SelectListItem item = new SelectListItem(location.Name, location.Id.ToString());
-                listALocations.Add(item);
-            }
+            //List<LocationViewModel> locations = _locationService.GetAllLocation();
+            //List<SelectListItem> listALocations = new List<SelectListItem>();
+            //foreach (LocationViewModel location in locations)
+            //{
+            //    SelectListItem item = new SelectListItem(location.Name, location.Id.ToString());
+            //    listALocations.Add(item);
+            //}
 
-            ViewBag.Categories = listALocations;
-            return View();
+           
+            return View(carVM);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Car car, IFormFile file)
+        public IActionResult Create(Car car,IFormFile file,CreateCarViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -82,19 +95,13 @@ namespace CarRentalsSystem.Controllers
                     }
                     car.CarPictureUrl = fileName;
                 }
-                _carService.AddCar(car);
+                _carService.Create(car);
                 return RedirectToAction(nameof(Index));
             }
-            return Ok(car);
-          
+           // return View(model);
+            return RedirectToAction("Index");
         }
-        public IActionResult SelectCategory()
-        {
-
-            ViewBag.Category = _categoryService.GetAllCategory();
-            var model = new CreateCarViewModel();
-            return View(model);
-        }
+      
 
         public IActionResult Find()
         {

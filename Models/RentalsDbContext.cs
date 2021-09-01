@@ -41,26 +41,26 @@ namespace CarRentalsSystem.Models
             modelBuilder.Entity<Role>().HasMany(r => r.UserRoles)
                 .WithOne(r => r.Role)
                 .HasForeignKey(r => r.RoleId);
-            //modelBuilder.Entity<User>().HasData(
-            //    new User
-            //    {
-            //        Id = 1,
-            //        FirstName = "Jafar",
-            //        MiddleName= "Okikiola",
-            //        LastName = "Lawal",
-            //        Gender ="Male",
-            //        Email = "okikiolalawal@gmail.com",
-            //        DateOfBirth = DateTime.Now,
-            //        PhoneNo = "09071681776",
-            //        Address ="Asero,Abk",
-            //        PasswordHash ="okiki18lawal",
-            //        ConfirmPassword = "okiki18lawal"
-            //    }
-            //    );
-            modelBuilder.Entity<Role>().HasData(
-                new Role { Id = 1, Name = "Admin" }, new Role { Id = 2, Name = "Customer" }
+            modelBuilder.Entity<User>().HasData(
+                  new User
+                   {
+                    Id = 1,
+                   FirstName = "Jafar",
+                   MiddleName= "Okikiola",
+                    LastName = "Lawal",
+                    Gender ="Male",
+                    Email = "okikiolalawal@gmail.com",
+                    DateOfBirth = DateTime.Now,
+                    PhoneNo = "09071681776",
+                    Address ="Asero,Abk",
+                   PasswordHash = "SehzKv9PAiawVd3TeV1QkkgBlCz67YoY7WMm4FB836c=",
+                   HashSalt = "d+RzYMAQvvCJ+aNedX1uDg=="
+                  }
                 );
-            //modelBuilder.Entity<UserRole>().HasData(new UserRole { UserId = 1, RoleId = 1 });
+            modelBuilder.Entity<Role>().HasData(
+             new Role { Id = 1, Name = "SuperAdmin",CreatedAt = DateTime.Now }, new Role { Id = 2, Name = "Admin", CreatedAt = DateTime.Now }, new Role { Id = 3, Name = "Customer" , CreatedAt = DateTime.Now }
+            );
+            modelBuilder.Entity<UserRole>().HasData(new UserRole {Id=1, UserId = 1, RoleId = 1,CreatedAt = DateTime.Now });
 
             base.OnModelCreating(modelBuilder);
         }

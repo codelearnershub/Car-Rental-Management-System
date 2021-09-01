@@ -1,0 +1,241 @@
+File Uploads in ASP.NET MVC with View Models
+06 JANUARY 2014 on asp.net-mvc, view-models, uploads, forms
+When I was first starting out in ASP.NET MVC, one of the things I struggled with the most was how to do file uploads while posting additional model data. I emphasized that last bit, because I found numerous tutorials and guides that purportedly showed you how to do file uploads in ASP.NET MVC, but they all had the POST action only receiving the upload itself, not a model full of data and a file upload. Hopefully, this guide will save other newbies out there the frustrations I went through.
+
+First, I'll start with the caveat that this methodology is geared towards storing a path reference to a file and not an actual file, itself, in your database. While SQL Server and other database servers will allow you store blob data, IMHO, this is extremely bad practice. As I like to say: just because you can shoot yourself in the foot with a gun, doesn't mean you should. If you store the actual file data in your database, then you must create an action to retrieve that data, write it to a response, add all the appropriate caching and expires headers to that response (for the love of all things good), etc., which also means that the entire ASP.NET machinery must spin up in order to serve that file to the user. Whereas with a simple path reference, you merely drop the URL into your page, and let IIS statically serve the file (which alone is exponentially faster) or you can even offload the file to a CDN for lightning fast delivery to the client. </rant>
+
+Entity
+For this example, we'll be creating an Image type, which will simply be an entity to hold data about an image we upload. It'll include properties for things like a title, alt text, a caption, etc. Here's our entity:
+
+public class Image
+{
+    [Key]
+    public int Id { get; set; }
+
+    [Required]
+    public string Title { get; set; }
+
+    public string AltText { get; set; }
+
+    [DataType(DataType.Html)]
+    public string Caption { get; set; }
+
+    [Required]
+    [DataType(DataType.ImageUrl)]
+    public string ImageUrl { get; set; }
+
+    private DateTime? createdDate
+    [Required]
+    [DataType(DataType.DateTime)]
+    public DateTime CreatedDate
+    {
+        get { return createdDate ?? DateTime.UtcNow; }
+        set { createdDate = value; }
+    }
+}
+Notice in particular that we don't have a reference to any byte information here: just a simple string property to hold our relative image URL path.
+
+View Model
+Next we'll need a view model:
+
+public class ImageViewModel
+{
+    [Required]
+    public string Title { get; set; }
+
+    public string AltText { get; set; }
+
+    [DataType(DataType.Html)]
+    public string Caption { get; set; }
+
+    [DataType(DataType.Upload)]
+    HttpPostedFileBase ImageUpload { get; set; }
+}
+Notice that we've added an ImageUpload property of type HttpPostedFileBase to our view model. This will hold the posted file data for us. Also, while a little off topic, you can also see one of the other benefits of using view models. I didn't need my CreatedDate attribute here because that's just for my entity. The entity's property is setup to set itself automatically, so I don't have to pass this around in my form.
+
+Create (GET version)
+Now, we'll need a controller with a Create action to handle the creation of the new image. We'll start with the GET version of the action and then move on to the POST version, and then finally our actions for updating the image.
+
+public class ImageController : Controller
+{
+    public ActionResult Create()
+    {
+        return View(new ImageViewModel());
+    }
+}
+This is an extremely basic action; we just need it to render our "Create" view using an instance of our view model.
+
+Create View
+Our create view will look like:
+
+@model ImageViewModel
+
+<form action="" method="post" enctype="multipart/form-data">
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true);
+
+    <div>
+        @Html.LabelFor(m => m.Title)
+        @Html.EditorFor(m => m.Title)
+    </div>
+    <div>
+        @Html.LabelFor(m => m.AltText)
+        @Html.EditorFor(m => m.AltText)
+    </div>
+    <div>
+        @Html.LabelFor(m => m.Caption)
+        @Html.EditorFor(m => m.Caption)
+    </div>
+    <div>
+        @Html.LabelFor(m => m.ImageUpload)
+        @Html.EditorFor(m => m.ImageUpload)
+    </div>
+    <button type="submit">Create</button>
+</form>
+Normally, I would always recommend using @using (Html.BeginForm()) { ... } to generate your form code, but when dealing with file uploads, I've found it easier and less error-prone to simply write out the form tag manually. In order to actually have the file data submitted, the form must have the enctype="multipart/form-data" attribute, and Html.BeginForm requires you specify, the controller action, controller, any additional route parameters, and the form method, before you can finally specify an anonymous object of html attributes where you'll add the enctype. It makes the code much more verbose and less reusuable, especially for simple postback form like this.
+
+
+UPDATE 07/28/2014
+
+It's been brought to my attention in the comments that @Html.EditorFor(m => m.ImageUpload) results in a set of text fields instead of a file upload. This is a good instructive moment, so I'll take the opportunity to explain what's happening here. Html.EditorFor is a bit of a magic method. What it actually does is inspect the type the property specified in the expression and attempt to find a matching editor template for that type. I have another post that explains editor and display templates in depth, if you're interested. The basic idea, though, is that these templates tell Razor what HTML it should generate for a property of the type the template implements. For example, a DateTime.cshtml template would be used for a DateTime property. Razor has some "default" templates that are used for some types. These don't actually exist as files in the project but can be overridden if you include the appropriate files in your project. Anyways, one of those defaults is not HttpPostedFileBase, so when I requested and editor for a property of that type, Razor went to plan B, which in the case of a class type, is to generate editors for each of the public properties on that class. That's why you get fields for "ContentLength" and such, because those are public properties on HttpPostedFileBase.
+
+This didn't occur to me during the initial writing of this post, because I always implement an Upload.cshtml (which corresponds with the DataType attribute I specified on the property in the view model) template so a proper file input is generated. That template would look roughly like the following:
+
+Views/Shared/EditorTemplates/Upload.cshtml
+
+@Html.TextBox("", ViewData.TemplateInfo.FormattedModelValue.ToString(), new { type = "file" })
+Or you can simply change the view code above for that property to:
+
+<div>
+    @Html.LabelFor(m => m.ImageUpload)
+    @Html.TextBoxFor(m => m.ImageUpload, new { type = "file" })
+</div>
+Now, back to our regularly scheduled program...
+
+Create (POST version)
+Now, we can create the POST version of our Create action to handle the postback.
+
+[HttpPost]
+[ValidateAntiForgeryToken]
+public ActionResult Create(ImageViewModel model)
+{
+    var validImageTypes = new string[]
+    {
+        "image/gif",
+        "image/jpeg",
+        "image/pjpeg",
+        "image/png"
+    }
+
+    if (model.ImageUpload == null || model.ImageUpload.ContentLength == 0)
+    {
+        ModelState.AddModelError("ImageUpload", "This field is required");
+    }
+    else if (!imageTypes.Contains(model.ImageUpload.ContentType))
+    {
+        ModelState.AddModelError("ImageUpload", "Please choose either a GIF, JPG or PNG image.
+    }
+
+    if (ModelState.IsValid)
+    {
+        var image = new Image
+        {
+            Title = model.Title,
+            AltText = model.AltText,
+            Caption = model.Caption
+        }
+
+        if (model.ImageUpload != null && model.ImageUpload.ContentLength > 0)
+        {
+            var uploadDir = "~/uploads"
+            var imagePath = Path.Combine(Server.MapPath(uploadDir), model.ImageUpload.FileName);
+            var imageUrl = Path.Combine(uploadDir, model.ImageUpload.FileName);
+            model.ImageUpload.SaveAs(imagePath);
+            image.ImageUrl = imageUrl;
+        }
+
+        db.Create(image);
+        db.SaveChanges();
+        return RedirectToAction("Index");
+    }
+
+    return View(model);
+}
+There's quite a bit going on here, so let me walk you through it. First, we create a string array of valid image types, since we're expecting in this case an file upload that should be an image. There's other "image" types that could go in here, such as "image/bmp", but BMP files aren't really suitable for the web, so I'm restricting it to just web image formats. Also, notice the "image/pjpeg" type. Older versions of IE use this content type for progressive JPEGs, so without this type in the array, a perfectly valid JPEG image might generate an error.
+
+Next, we check if the ImageUpload property is null or is an empty file and generate an error if that's the case. This is because this field should be required, but only on create. When editing this image object, we don't want to force the user to reupload the same image each time just to pass form validation. Now, in a real world application, you'd probably just want to use different view models for Create and Edit so you could the [Required] attribute on one version but not the other. Or, you could create a custom version of [Required] to check against the ImageUrl property and only throw an error if that if no file is posted and that field is blank. Do a search for "RequiredIf"; there's a number of implementations others have come up with.
+
+Next, if we do have a nonzero length file upload, we check the content type against our array of valid types and generate an error if there's a mismatch.
+
+If the model is still valid after all this, we drop into the meat of the action, where we create a new Image instance initialized with our posted data. Then we again check to see if we have a file upload. (Technically, this check isn't needed here because the ModelState will be invalid based on our previous checks, so we wouldn't even be in this block of code. It never hurts to be extra careful, though, and we will need this in our Edit action, since the upload will not be required there.) If we have an upload, then we save it to a full server path obtained by combining a defined upload directory with the upload's filename. (Server.MapPath is used to translate the ~ part of the path into the absolute path needed by this method.) Again, in a real world application, you would probably want to store this upload directory variable somewhere else. You could create some sort of constants static class, or put it in your web.config's appSettings (in which case you would use ConfigurationManager.AppSettings["MyUploadPathSettingName"] to retrieve it). Finally we set the image's ImageUrl property with the relative image path, save the new image like normal with Entity Framework, and redirect to the Index action.
+
+Edit (GET version)
+public ActionResult Edit(int id)
+{
+    var image = db.Images.Find(id);
+    if (image == null)
+    {
+        return new HttpNotFoundResult();
+    }
+
+    var model = new ImageViewModel
+    {
+        Title = image.Title,
+        AltText = image.AltText,
+        Caption = image.Caption
+    }
+
+    return View(model);
+}
+The GET version of our Edit action is a little more complicated than the Create version, but it's still pretty straight-forward. First, we query the db to make sure there's actually an existing image to update. Then, we create a new ImageViewModel initialized with data from the existing image, and finally, we render the view with that model.
+
+Edit (POST version)
+[HttpPost]
+[ValidateAntiForgeryToken]
+public ActionResult Edit(int id, ImageViewModel model)
+{
+    var validImageTypes = new string[]
+    {
+        "image/gif",
+        "image/jpeg",
+        "image/pjpeg",
+        "image/png"
+    }
+
+    if (model.ImageUpload != null || model.ImageUpload.ContentLength > 0 && !imageTypes.Contains(model.ImageUpload.ContentType))
+    {
+        ModelState.AddModelError("ImageUpload", "Please choose either a GIF, JPG or PNG image.
+    }
+
+    if (ModelState.IsValid)
+    {
+        var image = db.Images.Find(id);
+        if (image == null)
+        {
+            return new HttpNotFoundResult();
+        }
+
+        image.Title = model.Title;
+        image.AltText = model.AltText;
+        image.Caption = model.Caption;
+
+        if (model.ImageUpload != null && model.ImageUpload.ContentLength > 0)
+        {
+            var uploadDir = "~/uploads"
+            var imagePath = Path.Combine(Server.MapPath(uploadDir), model.ImageUpload.FileName);
+            var imageUrl = Path.Combine(uploadDir, model.ImageUpload.FileName);
+            model.ImageUpload.SaveAs(imagePath);
+            image.ImageUrl = imageUrl;
+        }
+
+        db.Update(image);
+        db.SaveChanges();
+        return RedirectToAction("Index");
+    }
+
+    return View(model);
+}
+The Edit POST action is very similar to the Create version, but there are some noticeable differences. First, we're no longer checking to see if a file was uploaded and adding a error to the ModelState if not, but our image type check is still there in case there is an upload. Next, instead of creating a new image, we retrieve the existing one from the database (or return 404 Not Found). We then set the image's properties with posted values. The image upload handling logic is identical. The only other obvious difference is that we of course call db.Update instead of db.Create.
+
+Wrap-up
+You might be wondering about a view for the edit action. Technically, the same view used for Create would work for Edit with no changes. In practice, you would most likely still want to create seperate views for Create and Edit and then extract the fields into a partial that could be utilized for both. None of that was really pertinent to the discussion of file uploads, though, so it's been left as an excersise for the reader. Also, it might be nice to show the user the existing image on the Edit view, but this too, was a bit out of scope and another exercise left to the reader. In a future post, I'll go into creating DisplayTemplates and EditorTemplates, and I'll show a nice contained way of handling this at that point.

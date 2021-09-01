@@ -4,7 +4,7 @@ using MySql.Data.EntityFrameworkCore.Metadata;
 
 namespace CarRentalsSystem.Migrations
 {
-    public partial class Init : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -69,10 +69,7 @@ namespace CarRentalsSystem.Migrations
                     DateOfBirth = table.Column<DateTime>(nullable: false),
                     PhoneNo = table.Column<string>(nullable: false),
                     Address = table.Column<string>(nullable: true),
-                    Gender = table.Column<string>(nullable: false),
-                    AccountNumber = table.Column<string>(nullable: true),
-                    CardNo = table.Column<string>(nullable: false),
-                    CardPin = table.Column<int>(nullable: false)
+                    Gender = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -88,7 +85,7 @@ namespace CarRentalsSystem.Migrations
                     CreatedAt = table.Column<DateTime>(nullable: false),
                     Make = table.Column<string>(nullable: false),
                     Name = table.Column<string>(nullable: false),
-                    Model = table.Column<string>(nullable: false),
+                    Year = table.Column<string>(nullable: false),
                     PlateNo = table.Column<string>(nullable: false),
                     Features = table.Column<string>(nullable: false),
                     BreakdownPrice = table.Column<string>(nullable: false),
@@ -242,6 +239,26 @@ namespace CarRentalsSystem.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.InsertData(
+                table: "Roles",
+                columns: new[] { "Id", "CreatedAt", "Name" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2021, 8, 23, 5, 5, 56, 741, DateTimeKind.Local).AddTicks(6137), "SuperAdmin" },
+                    { 2, new DateTime(2021, 8, 23, 5, 5, 56, 741, DateTimeKind.Local).AddTicks(7152), "Admin" },
+                    { 3, new DateTime(2021, 8, 23, 5, 5, 56, 741, DateTimeKind.Local).AddTicks(7164), "Customer" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "Id", "Address", "ConfirmPassword", "CreatedAt", "DateOfBirth", "Email", "FirstName", "Gender", "HashSalt", "LastName", "MiddleName", "PasswordHash", "PhoneNo" },
+                values: new object[] { 1, "Asero,Abk", null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2021, 8, 23, 5, 5, 56, 737, DateTimeKind.Local).AddTicks(4552), "okikiolalawal@gmail.com", "Jafar", "Male", "d+RzYMAQvvCJ+aNedX1uDg==", "Lawal", "Okikiola", "SehzKv9PAiawVd3TeV1QkkgBlCz67YoY7WMm4FB836c=", "09071681776" });
+
+            migrationBuilder.InsertData(
+                table: "UserRoles",
+                columns: new[] { "Id", "CreatedAt", "RoleId", "UserId" },
+                values: new object[] { 1, new DateTime(2021, 8, 23, 5, 5, 56, 742, DateTimeKind.Local).AddTicks(72), 1, 1 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Bookings_CarId",
